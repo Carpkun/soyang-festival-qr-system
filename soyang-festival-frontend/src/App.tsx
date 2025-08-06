@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './App.css'
 import NicknameForm from './components/NicknameForm'
 import QRScanner from './components/QRScanner'
@@ -13,14 +13,76 @@ function App() {
   const [scanMessage, setScanMessage] = useState<string | null>(null)
   const [activeTab, setActiveTab] = useState<'scan' | 'status'>('scan')
   
-  // URL 파라미터에서 관리자 모드 확인
-  const isAdminMode = new URLSearchParams(window.location.search).get('admin') === 'true'
+  // URL 파라미터 확인
+  const urlParams = new URLSearchParams(window.location.search)
+  const isAdminMode = urlParams.get('admin') === 'true'
+  const boothIdFromUrl = urlParams.get('boothId')
+
+  // localStorage에서 참여자 정보 복원
+  useEffect(() => {
+    const savedParticipantId = localStorage.getItem('participantId')
+    const savedParticipantNickname = localStorage.getItem('participantNickname')
+    
+    if (savedParticipantId && savedParticipantNickname) {
+      setParticipantId(savedParticipantId)
+      setParticipantNickname(savedParticipantNickname)
+      
+      // 스탬프 데이터 로드
+      loadParticipantData(savedParticipantId)
+    }
+  }, [])
+
+  const loadParticipantData = async (id: string) => {
+    try {
+      const participantData = await apiService.getParticipant(id)
+      setStamps(participantData.stamps || [])
+    } catch (error) {
+      console.error('Failed to load participant data:', error)
+      // 오류 발생 시 localStorage 지우기
+      localStorage.removeItem('participantId')
+      localStorage.removeItem('participantNickname')
+    }
+  }
 
   const handleParticipantCreated = (id: string, nickname: string) => {
     setParticipantId(id)
     setParticipantNickname(nickname)
     console.log(`참여자 생성됨: ${nickname} (ID: ${id})`)
+    
+    // QR 코드로 접속한 경우 자동으로 스탬프 획득 시도
+    if (boothIdFromUrl) {
+      setTimeout(() => {
+        handleStampFromUrl(id, boothIdFromUrl)
+      }, 500)
+    }
   }
+
+  // URL에서 온 boothId로 스탬프 획득
+  const handleStampFromUrl = async (participantId: string, boothId: string) => {
+    try {
+      const response = await apiService.createStamp(participantId, boothId)
+      const participantData = await apiService.getParticipant(participantId)
+      setStamps(participantData.stamps || [])
+      setScanMessage(`🎉 QR 코드 스캔 완료! 스탬프를 획득했습니다! (${response.total_stamps}개)`)
+      setActiveTab('status') // 스탬프 현황 탭으로 이동
+      
+      setTimeout(() => setScanMessage(null), 5000)
+    } catch (error: any) {
+      if (error.response?.data?.error) {
+        setScanMessage(`❌ ${error.response.data.error}`)
+      } else {
+        setScanMessage('❌ 스탬프 획득에 실패했습니다.')
+      }
+      setTimeout(() => setScanMessage(null), 5000)
+    }
+  }
+
+  // 기존 참여자가 QR 코드로 접속한 경우 처리
+  useEffect(() => {
+    if (participantId && boothIdFromUrl) {
+      handleStampFromUrl(participantId, boothIdFromUrl)
+    }
+  }, [participantId, boothIdFromUrl])
 
   const handleQRScan = async (qrData: string) => {
     if (!participantId) return

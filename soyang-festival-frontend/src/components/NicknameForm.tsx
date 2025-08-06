@@ -23,6 +23,11 @@ const NicknameForm: React.FC<NicknameFormProps> = ({ onParticipantCreated }) => 
 
     try {
       const participant = await apiService.createParticipant(nickname.trim());
+      
+      // localStorage에 참여자 정보 저장
+      localStorage.setItem('participantId', participant.id);
+      localStorage.setItem('participantNickname', participant.nickname);
+      
       onParticipantCreated(participant.id, participant.nickname);
     } catch (err: any) {
       if (err.response?.data?.error) {
