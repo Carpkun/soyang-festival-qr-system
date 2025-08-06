@@ -145,7 +145,7 @@ function App() {
               className={`tab-button ${activeTab === 'status' ? 'active' : ''}`}
               onClick={() => setActiveTab('status')}
             >
-              🏆 스탬프 현황 ({stamps.length}/8)
+              🏆 스탬프 현황 ({stamps.length}/5)
             </button>
           </div>
 

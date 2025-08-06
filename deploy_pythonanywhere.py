@@ -28,9 +28,17 @@ def run_command(command, description):
     return True
 
 def main():
-    print("🎪 소양강문화제 QR 시스템 PythonAnywhere 배포 시작")
+    print("🌊 소양강문화제 QR 시스템 PythonAnywhere 배포 시작")
     
-    # 1. 가상환경 활성화 (PythonAnywhere에서는 자동으로 처리됨)
+    # 1. .env 파일 확인
+    if not os.path.exists('.env'):
+        print("\n⚠️  경고: .env 파일이 없습니다!")
+        print(".env.example을 .env로 복사하고 설정을 수정하세요.")
+        return False
+    else:
+        print("\n✅ .env 파일 확인 완료")
+    
+    # 2. 패키지 설치
     print("\n📦 패키지 설치 중...")
     
     # 2. 패키지 설치

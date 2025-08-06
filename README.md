@@ -20,18 +20,37 @@ npm install
 npm run dev
 ```
 
+## 환경 설정
+
+### 환경 변수 설정 (중요!)
+배포 전에 `.env` 파일을 생성하여 민감정보를 설정하세요:
+
+```bash
+# .env 파일 생성 (루트 디렉토리에)
+cp .env.example .env
+```
+
+`.env` 파일에서 다음 값들을 실제 값으로 변경:
+- `DJANGO_SECRET_KEY`: 강력한 시크릿 키로 변경
+- `DB_PASSWORD`: 실제 MySQL 비밀번호로 변경
+- 기타 필요한 설정들
+
+### 스탬프 목표 개수
+현재 **5개** 부스 스탬프 수집으로 설정되어 있습니다.
+
 ## 무료 배포 방법 (MySQL + PythonAnywhere)
 
 ### 1. 백엔드 배포 (PythonAnywhere - 무료, 슬립 없음)
 1. [PythonAnywhere.com](https://www.pythonanywhere.com) 가입
 2. MySQL 데이터베이스 생성
 3. GitHub 저장소 연결
-4. 자동 배포 스크립트 실행:
+4. `.env` 파일 설정 (위 참조)
+5. `settings_mysql.py` 설정 사용:
    ```bash
-   python3.10 deploy_pythonanywhere.py
+   # PythonAnywhere에서 실행
+   python manage.py migrate --settings=soyang_festival_backend.settings_mysql
+   python manage.py collectstatic --settings=soyang_festival_backend.settings_mysql
    ```
-5. 설정 파일 수정 (`settings_mysql.py`):
-   - 사용자명, 비밀번호, 도메인 설정
 
 ### 3. 프론트엔드 배포 (Vercel - 무료)
 1. [Vercel.com](https://vercel.com) 가입  
