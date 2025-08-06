@@ -37,11 +37,11 @@ DATABASES = {
 
 # Static files settings
 STATIC_URL = '/static/'
-STATIC_ROOT = '/home/yourusername/soyang-festival-backend/static'  # 실제 경로로 변경
+STATIC_ROOT = '/home/ccculture/soyang-festival-backend/staticfiles'  # collectstatic으로 수집된 파일들
 
 # Media files settings
 MEDIA_URL = '/media/'
-MEDIA_ROOT = '/home/yourusername/soyang-festival-backend/media'  # 실제 경로로 변경
+MEDIA_ROOT = '/home/ccculture/soyang-festival-backend/media'  # 사용자 업로드 파일들
 
 # Security settings
 SECRET_KEY = 'your-secret-key-here'  # 강력한 비밀키로 변경

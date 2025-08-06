@@ -30,11 +30,11 @@ DATABASES = {
 
 # Static files settings
 STATIC_URL = '/static/'
-STATIC_ROOT = os.environ.get('STATIC_ROOT', '/home/yourusername/soyang-festival-backend/static')
+STATIC_ROOT = os.environ.get('STATIC_ROOT', '/home/ccculture/soyang-festival-backend/staticfiles')
 
 # Media files settings
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.environ.get('MEDIA_ROOT', '/home/yourusername/soyang-festival-backend/media')
+MEDIA_ROOT = os.environ.get('MEDIA_ROOT', '/home/ccculture/soyang-festival-backend/media')
 
 # Security settings - 환경 변수에서 가져오기
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-secret-lDWW84H2C9eoR5Sc8j_RjWAIZs7gTTNBx6rVB52r-75B09aU_RZnGOeQcyO0CJJRlfdNGWGfjbAA1Zb7NIjjqA')
