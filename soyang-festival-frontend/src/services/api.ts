@@ -3,7 +3,7 @@ import axios from 'axios';
 // API 기본 설정
 // 환경에 따라 API URL 설정
 const API_BASE_URL = process.env.NODE_ENV === 'production' 
-  ? 'https://yourusername.pythonanywhere.com/api'  // PythonAnywhere URL로 변경
+  ? 'https://ccculture.pythonanywhere.com/api'  // PythonAnywhere URL
   : 'http://192.168.0.13:8000/api';
 
 const api = axios.create({
