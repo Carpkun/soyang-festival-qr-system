@@ -8,7 +8,7 @@ interface QRCodeGeneratorProps {
 }
 
 const QRCodeGenerator: React.FC<QRCodeGeneratorProps> = ({ boothId, boothName }) => {
-  const qrData = `booth_${boothId}`; // Generate QR code data based on booth id
+  const qrData = `https://ccculture.pythonanywhere.com/?boothId=${boothId}`; // Generate QR code URL
 
   return (
     <div className="qr-generator">

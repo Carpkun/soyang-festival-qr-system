@@ -67,7 +67,7 @@ const AdminQRManager: React.FC = () => {
               <div class="info">
                 <p><strong>부스 ID:</strong> ${booth.id}</p>
                 <p><strong>설명:</strong> ${booth.description}</p>
-                <p><strong>QR 데이터:</strong> booth_${booth.id}</p>
+                <p><strong>QR 데이터:</strong> https://ccculture.pythonanywhere.com/?boothId=${booth.id}</p>
               </div>
               <div class="footer">
                 <p>QR 코드를 스캔하여 스탬프를 획득하세요!</p>
@@ -84,7 +84,7 @@ const AdminQRManager: React.FC = () => {
         if (qrContainer) {
           qrContainer.innerHTML = `<canvas id="qr-canvas"></canvas>`;
           // Canvas를 사용하여 QR 코드 그리기 (여기서는 간단히 텍스트로 표시)
-          qrContainer.innerHTML = `<div style="border: 1px solid #ccc; padding: 20px; background: #f9f9f9;">QR 코드 영역<br/>booth_${booth.id}</div>`;
+          qrContainer.innerHTML = `<div style="border: 1px solid #ccc; padding: 20px; background: #f9f9f9;">QR 코드 영역<br/>https://ccculture.pythonanywhere.com/?boothId=${booth.id}</div>`;
         }
       });
       
@@ -147,10 +147,10 @@ const AdminQRManager: React.FC = () => {
               ${booths.map(booth => `
                 <div class="qr-item">
                   <h3>${booth.name}</h3>
-                  <div class="qr-placeholder">QR 코드 영역<br/>booth_${booth.id}</div>
+                  <div class="qr-placeholder">QR 코드 영역<br/>https://ccculture.pythonanywhere.com/?boothId=${booth.id}</div>
                   <p><strong>부스 ID:</strong> ${booth.id}</p>
                   <p>${booth.description}</p>
-                  <p><strong>QR 데이터:</strong> booth_${booth.id}</p>
+                  <p><strong>QR 데이터:</strong> https://ccculture.pythonanywhere.com/?boothId=${booth.id}</p>
                 </div>
               `).join('')}
             </div>

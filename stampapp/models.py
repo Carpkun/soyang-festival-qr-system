@@ -19,7 +19,7 @@ class Booth(models.Model):
 
     @property
     def qr_url(self):
-        return f"https://your-domain.com/?boothId={self.id}"
+        return f"https://ccculture.pythonanywhere.com/?boothId={self.id}"
 
 # Participant information
 class Participant(models.Model):

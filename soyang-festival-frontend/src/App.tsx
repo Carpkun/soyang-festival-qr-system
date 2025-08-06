@@ -26,8 +26,19 @@ function App() {
     if (!participantId) return
 
     try {
-      // QR 데이터에서 부스 ID 추출 (예: "booth_1", "booth_2" 등)
-      const boothId = qrData.replace('booth_', '')
+      // QR 데이터에서 부스 ID 추출 (URL 형태 또는 booth_ 형태 모두 지원)
+      let boothId = '';
+      if (qrData.includes('boothId=')) {
+        // URL 형태: https://domain.com/?boothId=123
+        const url = new URL(qrData);
+        boothId = url.searchParams.get('boothId') || '';
+      } else if (qrData.startsWith('booth_')) {
+        // 기존 형태: booth_123
+        boothId = qrData.replace('booth_', '');
+      } else {
+        // 그냥 ID 값인 경우
+        boothId = qrData;
+      }
       
       const response = await apiService.createStamp(participantId, boothId)
       // 실제 스탬프 데이터를 다시 가져오기
