@@ -129,7 +129,7 @@ CORS_ALLOWED_ORIGINS = [
 CORS_ALLOW_ALL_ORIGINS = os.getenv('CORS_ALLOW_ALL_ORIGINS', 'False').lower() == 'true'
 CORS_ALLOW_CREDENTIALS = True
 
-# Django REST Framework settings
+# Django REST Framework settings (축제 현장 최적화)
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': [
         'rest_framework.renderers.JSONRenderer',
@@ -138,7 +138,57 @@ REST_FRAMEWORK = {
         'rest_framework.parsers.JSONParser',
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 100,
+    'PAGE_SIZE': 25,  # 축제 현장 부하 분산
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.AnonRateThrottle',
+        'rest_framework.throttling.UserRateThrottle'
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '60/minute',  # 익명 사용자 분당 60회 (QR 스캔 고려)
+        'user': '120/minute'  # 등록 사용자 분당 120회
+    },
+}
+
+# CPU 사용량 최적화 설정
+# 데이터베이스 연결 최적화
+DATABASES['default']['CONN_MAX_AGE'] = 0  # 연결 재사용 비활성화 (무료 계정용)
+DATABASES['default']['OPTIONS'].update({
+    'connect_timeout': 5,
+    'read_timeout': 5,
+    'write_timeout': 5,
+})
+
+# 세션 설정 최적화
+SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+SESSION_CACHE_ALIAS = 'default'
+SESSION_COOKIE_AGE = 3600  # 1시간
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
+# 캐시 설정 (메모리 기반)
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'unique-snowflake',
+        'TIMEOUT': 300,  # 5분
+        'OPTIONS': {
+            'MAX_ENTRIES': 100,
+        }
+    }
+}
+
+# 로깅 최적화 (에러만 로그)
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'ERROR',  # ERROR 레벨만 로깅
+    },
 }
 
 # Security settings
