@@ -37,7 +37,7 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = '/home/yourusername/soyang-festival-backend/media'  # 실제 경로로 변경
 
 # Security settings
-SECRET_KEY = 'your-secret-key-here'  # 강력한 비밀키로 변경
+SECRET_KEY = 'django-secret-lDWW84H2C9eoR5Sc8j_RjWAIZs7gTTNBx6rVB52r-75B09aU_RZnGOeQcyO0CJJRlfdNGWGfjbAA1Zb7NIjjqA'
 
 # CORS settings
 CORS_ALLOWED_ORIGINS = [
