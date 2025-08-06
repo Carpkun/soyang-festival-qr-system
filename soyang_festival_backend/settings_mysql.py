@@ -149,18 +149,18 @@ REST_FRAMEWORK = {
     },
 }
 
-# CPU 사용량 최적화 설정
-# 데이터베이스 연결 최적화
-DATABASES['default']['CONN_MAX_AGE'] = 0  # 연결 재사용 비활성화 (무료 계정용)
+# 유료 플랜 최적화 설정
+# 데이터베이스 연결 최적화 (유료 플랜은 연결 재사용 가능)
+DATABASES['default']['CONN_MAX_AGE'] = 60  # 60초 동안 연결 재사용
 DATABASES['default']['OPTIONS'].update({
-    'connect_timeout': 5,
-    'read_timeout': 5,
-    'write_timeout': 5,
+    'connect_timeout': 10,
+    'read_timeout': 10,
+    'write_timeout': 10,
 })
 
-# 세션 설정 최적화
-SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
-SESSION_CACHE_ALIAS = 'default'
+# 세션 설정 최적화 (안정성을 위해 DB 기반 사용)
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+# SESSION_CACHE_ALIAS = 'default'  # DB 기반에서는 불필요
 SESSION_COOKIE_AGE = 3600  # 1시간
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
