@@ -9,16 +9,16 @@ from .settings import *
 DEBUG = False
 
 # PythonAnywhere에서 허용할 호스트
-ALLOWED_HOSTS = ['yourusername.pythonanywhere.com', 'localhost', '127.0.0.1']  # 실제 사용자명으로 변경
+ALLOWED_HOSTS = ['ccculture.pythonanywhere.com', 'localhost', '127.0.0.1']
 
 # MySQL Database configuration
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'yourusername$soyang_festival',  # 실제 사용자명으로 변경
-        'USER': 'yourusername',  # 실제 사용자명으로 변경
-        'PASSWORD': 'your-mysql-password',  # MySQL 비밀번호
-        'HOST': 'yourusername.mysql.pythonanywhere-services.com',  # 실제 사용자명으로 변경
+        'NAME': 'ccculture$soyang_festival',
+        'USER': 'ccculture', 
+        'PASSWORD': 'your-mysql-password',  # 실제 MySQL 비밀번호로 변경
+        'HOST': 'ccculture.mysql.pythonanywhere-services.com',
         'PORT': '3306',
         'OPTIONS': {
             'charset': 'utf8mb4',
@@ -30,11 +30,11 @@ DATABASES = {
 
 # Static files settings
 STATIC_URL = '/static/'
-STATIC_ROOT = '/home/yourusername/soyang-festival-backend/static'  # 실제 경로로 변경
+STATIC_ROOT = '/home/ccculture/soyang-festival-qr-system/static'
 
 # Media files settings
 MEDIA_URL = '/media/'
-MEDIA_ROOT = '/home/yourusername/soyang-festival-backend/media'  # 실제 경로로 변경
+MEDIA_ROOT = '/home/ccculture/soyang-festival-qr-system/media'
 
 # Security settings
 SECRET_KEY = 'django-secret-lDWW84H2C9eoR5Sc8j_RjWAIZs7gTTNBx6rVB52r-75B09aU_RZnGOeQcyO0CJJRlfdNGWGfjbAA1Zb7NIjjqA'
