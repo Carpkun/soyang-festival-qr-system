@@ -1,35 +1,34 @@
 """
-Django production settings for PythonAnywhere MySQL deployment
-with environment variables for secure configuration
+Django settings with environment variables support
+환경변수를 지원하는 간단한 설정 파일
 """
 
 import os
 from .settings import *
 
-# python-dotenv로 .env 파일 로드
+# .env 파일이 있다면 로드
 try:
     from dotenv import load_dotenv
     load_dotenv()
 except ImportError:
-    # dotenv가 없어도 환경변수는 사용 가능
     pass
 
-# Production specific settings
+# DEBUG 모드
 DEBUG = os.getenv('DEBUG', 'False').lower() == 'true'
 
-# Security settings
-SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'django-secret-fallback-key')
-
-# Allowed hosts for production
+# 허용 호스트
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'ccculture.pythonanywhere.com').split(',')
 
-# MySQL Database configuration for PythonAnywhere
+# 비밀키
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'fallback-secret-key')
+
+# MySQL 데이터베이스 설정
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': os.getenv('DB_NAME', 'ccculture$soyang_festival'),
         'USER': os.getenv('DB_USER', 'ccculture'),
-        'PASSWORD': os.getenv('DB_PASSWORD'),  # 필수 환경변수
+        'PASSWORD': os.getenv('DB_PASSWORD', 'fallback-password'),
         'HOST': os.getenv('DB_HOST', 'ccculture.mysql.pythonanywhere-services.com'),
         'PORT': os.getenv('DB_PORT', '3306'),
         'OPTIONS': {
@@ -40,33 +39,31 @@ DATABASES = {
     }
 }
 
-# Static files settings
+# Static/Media 파일 설정
 STATIC_URL = '/static/'
 STATIC_ROOT = os.getenv('STATIC_ROOT', '/home/ccculture/soyang-festival-qr-system/staticfiles')
 
-# Media files settings
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.getenv('MEDIA_ROOT', '/home/ccculture/soyang-festival-qr-system/media')
 
-# CORS settings for production
+# CORS 설정
 FRONTEND_URL = os.getenv('FRONTEND_URL', 'https://soyang-festival-qr-system-oh27.vercel.app')
 CORS_ALLOWED_ORIGINS = [
     FRONTEND_URL,
-    "https://ccculture.pythonanywhere.com",  # 백엔드 자체
+    "https://ccculture.pythonanywhere.com",
 ]
 
-# 개발 중에는 모든 오리진 허용
 CORS_ALLOW_ALL_ORIGINS = os.getenv('CORS_ALLOW_ALL_ORIGINS', 'True').lower() == 'true'
 CORS_ALLOW_CREDENTIALS = True
 
-# MySQL specific optimizations
+# MySQL 최적화
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
-# Timezone settings
+# 시간대 설정
 USE_TZ = True
 TIME_ZONE = 'Asia/Seoul'
 
-# Security settings
+# 보안 설정
 SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 X_FRAME_OPTIONS = 'DENY'

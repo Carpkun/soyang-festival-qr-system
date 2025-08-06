@@ -27,11 +27,11 @@ pip install -r requirements.txt --quiet
 
 # 마이그레이션 실행
 echo "🗄️ 데이터베이스 마이그레이션..."
-python manage.py migrate --settings=soyang_festival_backend.settings_production
+python manage.py migrate --settings=soyang_festival_backend.settings_env
 
 # static 파일 수집
 echo "📦 Static 파일 수집..."
-python manage.py collectstatic --noinput --settings=soyang_festival_backend.settings_production
+python manage.py collectstatic --noinput --settings=soyang_festival_backend.settings_env
 
 # 백업된 변경사항 복원 여부 확인
 echo ""
@@ -48,4 +48,4 @@ echo ""
 echo "3. PythonAnywhere Web 탭에서 웹앱 재시작 (Reload 버튼)"
 echo ""
 echo "4. 설정 확인:"
-echo "   python manage.py shell --settings=soyang_festival_backend.settings_production -c \"from django.conf import settings; print('DB:', settings.DATABASES['default']['NAME'])\""
+echo "   python manage.py shell --settings=soyang_festival_backend.settings_env -c \"from django.conf import settings; print('DB:', settings.DATABASES['default']['NAME'])\""
