@@ -1,55 +1,71 @@
 """
-Django production settings for soyang_festival_backend project.
+Django production settings for PythonAnywhere MySQL deployment
+with environment variables for secure configuration
 """
 
 import os
-import dj_database_url
-from decouple import config
-
 from .settings import *
 
+# python-dotenv가 설치되어 있다면 사용
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass
+
 # Production specific settings
-DEBUG = config('DEBUG', default=False, cast=bool)
+DEBUG = os.getenv('DEBUG', 'False').lower() == 'true'
 
 # Security settings
-SECRET_KEY = config('SECRET_KEY', default='your-secret-key-here')
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'django-secret-fallback-key')
 
 # Allowed hosts for production
-ALLOWED_HOSTS = ['*']  # 배포 후 실제 도메인으로 제한
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'ccculture.pythonanywhere.com').split(',')
 
-# Database configuration for production
-if 'DATABASE_URL' in os.environ:
-    DATABASES['default'] = dj_database_url.parse(os.environ.get('DATABASE_URL'))
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': config('DB_NAME'),
-            'USER': config('DB_USER'),
-            'PASSWORD': config('DB_PASSWORD'),
-            'HOST': config('DB_HOST', default='localhost'),
-            'PORT': config('DB_PORT', default='5432'),
-        }
+# MySQL Database configuration for PythonAnywhere
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': os.getenv('DB_NAME', 'ccculture$soyang_festival'),
+        'USER': os.getenv('DB_USER', 'ccculture'),
+        'PASSWORD': os.getenv('DB_PASSWORD'),  # 필수 환경변수
+        'HOST': os.getenv('DB_HOST', 'ccculture.mysql.pythonanywhere-services.com'),
+        'PORT': os.getenv('DB_PORT', '3306'),
+        'OPTIONS': {
+            'charset': 'utf8mb4',
+            'use_unicode': True,
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+        },
     }
+}
 
-# Static files (CSS, JavaScript, Images)
+# Static files settings
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.getenv('STATIC_ROOT', '/home/ccculture/soyang-festival-qr-system/staticfiles')
 
-# Use WhiteNoise for static files
-MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# Media files settings
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.getenv('MEDIA_ROOT', '/home/ccculture/soyang-festival-qr-system/media')
 
 # CORS settings for production
+FRONTEND_URL = os.getenv('FRONTEND_URL', 'https://soyang-festival-qr-system-oh27.vercel.app')
 CORS_ALLOWED_ORIGINS = [
-    "https://your-frontend-domain.vercel.app",  # 프론트엔드 배포 URL로 변경
+    FRONTEND_URL,
+    "https://ccculture.pythonanywhere.com",  # 백엔드 자체
 ]
 
 # 개발 중에는 모든 오리진 허용
-CORS_ALLOW_ALL_ORIGINS = config('CORS_ALLOW_ALL_ORIGINS', default=True, cast=bool)
+CORS_ALLOW_ALL_ORIGINS = os.getenv('CORS_ALLOW_ALL_ORIGINS', 'True').lower() == 'true'
 CORS_ALLOW_CREDENTIALS = True
 
+# MySQL specific optimizations
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
+# Timezone settings
+USE_TZ = True
+TIME_ZONE = 'Asia/Seoul'
+
 # Security settings
-SECURE_SSL_REDIRECT = config('SECURE_SSL_REDIRECT', default=False, cast=bool)
 SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
+X_FRAME_OPTIONS = 'DENY'
