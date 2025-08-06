@@ -3,7 +3,7 @@ import QRCode from 'react-qr-code';
 import '../styles/QRCodeGenerator.css';
 
 interface QRCodeGeneratorProps {
-  boothId: number;
+  boothId: string;
   boothName: string;
 }
 

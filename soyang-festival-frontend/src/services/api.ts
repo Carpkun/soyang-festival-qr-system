@@ -118,12 +118,12 @@ export const apiService = {
     return response.data;
   },
 
-  updateBooth: async (boothId: number, boothData: Partial<Booth>): Promise<Booth> => {
+  updateBooth: async (boothId: string, boothData: Partial<Booth>): Promise<Booth> => {
     const response = await api.put(`/booths/${boothId}/`, boothData);
     return response.data;
   },
 
-  deleteBooth: async (boothId: number): Promise<void> => {
+  deleteBooth: async (boothId: string): Promise<void> => {
     await api.delete(`/booths/${boothId}/`);
   },
 

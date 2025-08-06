@@ -6,13 +6,13 @@ import { apiService } from '../services/api';
 import '../styles/AdminQRManager.css';
 
 interface Booth {
-  id: number;
+  id: string;
   name: string;
   description: string;
 }
 
 const AdminQRManager: React.FC = () => {
-  const [selectedBooth, setSelectedBooth] = useState<number | null>(null);
+  const [selectedBooth, setSelectedBooth] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<'booths' | 'qr' | 'dashboard'>('booths');
   const [booths, setBooths] = useState<Booth[]>([]);
 
@@ -29,7 +29,7 @@ const AdminQRManager: React.FC = () => {
     }
   };
 
-  const handlePrintQR = (boothId: number) => {
+  const handlePrintQR = (boothId: string) => {
     const printWindow = window.open('', '', 'height=600,width=800');
     const booth = booths.find(b => b.id === boothId);
     

@@ -3,7 +3,7 @@ import { apiService } from '../services/api';
 import '../styles/BoothManager.css';
 
 interface Booth {
-  id: number;
+  id: string;
   name: string;
   description: string;
   location?: string;
@@ -75,7 +75,7 @@ const BoothManager: React.FC = () => {
     setShowAddForm(true);
   };
 
-  const handleDelete = async (boothId: number) => {
+  const handleDelete = async (boothId: string) => {
     if (!confirm('정말로 이 부스를 삭제하시겠습니까?')) {
       return;
     }
